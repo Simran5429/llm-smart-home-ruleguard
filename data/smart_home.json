@@ -1,0 +1,44 @@
+{
+  "rooms": {
+    "living_room": {
+      "devices": {
+        "light": {
+          "actions": ["turn_on", "turn_off"],
+          "state": "off"
+        },
+        "fan": {
+          "actions": ["turn_on", "turn_off", "set_speed"],
+          "state": "off"
+        }
+      },
+      "sensors": {
+        "motion_sensor": {
+          "value": false
+        },
+        "temperature_sensor": {
+          "value": 25
+        }
+      }
+    },
+    "bedroom": {
+      "devices": {
+        "light": {
+          "actions": ["turn_on", "turn_off"],
+          "state": "off"
+        },
+        "ac": {
+          "actions": ["turn_on", "turn_off", "set_temperature"],
+          "state": "off"
+        }
+      },
+      "sensors": {
+        "motion_sensor": {
+          "value": true
+        },
+        "temperature_sensor": {
+          "value": 29
+        }
+      }
+    }
+  }
+}
