@@ -12,23 +12,27 @@ from validator.checker import validate_rule, check_intent_mismatch
 data = load_smart_home_state()
 
 # Example user input
-user_input = "Set the bedroom light temperature to 20"
-print("User Input:", user_input)
+while True:
+    user_input = input("\nEnter your smart home command (type 'exit' to quit): ")
 
-# Generate rule
-rule = generate_rule(user_input, data)
+    if user_input.lower() == "exit":
+        print("Exiting...")
+        break
 
-print("Generated Rule:")
-print(rule)
+    print("User Input:", user_input)
 
-# Validate rule
-result = validate_rule(rule, data)
+    rule = generate_rule(user_input, data)
 
-print("\nValidation Result:")
-print(result)
+    print("Generated Rule:")
+    print(rule)
 
-mismatch_result = check_intent_mismatch(user_input, rule)
+    result = validate_rule(rule, data)
 
-print("\nIntent Check Result:")
-print(mismatch_result)
+    print("\nValidation Result:")
+    print(result)
+
+    mismatch_result = check_intent_mismatch(user_input, rule)
+
+    print("\nIntent Check Result:")
+    print(mismatch_result)
 
