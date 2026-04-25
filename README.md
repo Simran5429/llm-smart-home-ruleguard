@@ -15,7 +15,7 @@ The goal of this project is to make LLM-based smart home systems more reliable b
 
 ## Current Project Structure
 
-```t
+```
 
 llm-smart-home-ruleguard/
 │

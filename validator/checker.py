@@ -42,29 +42,31 @@ def validate_rule(rule, smart_home_data):
         }
 
     # ---------- TRIGGER VALIDATION ----------
-    trigger = rule.get("trigger", {})
-    source = trigger.get("source", "")
+    trigger = rule.get("trigger")
 
-    if "." not in source:
-        return {
-            "valid": False,
-            "reason": "Invalid sensor format"
-        }
+    if trigger:
+        source = trigger.get("source", "")
 
-    room_name, sensor_name = source.split(".")
+        if "." not in source:
+            return {
+                "valid": False,
+                "reason": "Invalid sensor format"
+            }
 
-    if room_name not in rooms:
-        return {
-            "valid": False,
-            "reason": f"Room '{room_name}' does not exist (trigger)"
-        }
+        room_name, sensor_name = source.split(".")
 
-    sensors = rooms[room_name].get("sensors", {})
-    if sensor_name not in sensors:
-        return {
-            "valid": False,
-            "reason": f"Sensor '{sensor_name}' does not exist in room '{room_name}'"
-        }
+        if room_name not in rooms:
+            return {
+                "valid": False,
+                "reason": f"Room '{room_name}' does not exist (trigger)"
+            }
+
+        sensors = rooms[room_name].get("sensors", {})
+        if sensor_name not in sensors:
+            return {
+                "valid": False,
+                "reason": f"Sensor '{sensor_name}' does not exist in room '{room_name}'"
+            }
 
     # ---------- FINAL ----------
     return {
@@ -100,3 +102,36 @@ def check_intent_mismatch(user_input, rule):
         "mismatch": False,
         "reason": "No intent mismatch detected"
     }
+
+def suggest_alternative(rule, smart_home_data):
+    if rule is None:
+        return None
+
+    rooms = smart_home_data.get("rooms", {})
+    action = rule.get("action", {})
+    device_path = action.get("device", "")
+
+    if "." not in device_path:
+        return None
+
+    requested_room, requested_device = device_path.split(".")
+
+    suggestions = []
+
+    for room_name, room_data in rooms.items():
+        devices = room_data.get("devices", {})
+
+        # If device exists in another room
+        if requested_device in devices:
+            suggestions.append(f"{room_name}.{requested_device}")
+
+    if suggestions:
+        return f"Did you mean: {suggestions[0]}?"
+
+    # fallback: suggest any available device
+    for room_name, room_data in rooms.items():
+        devices = list(room_data.get("devices", {}).keys())
+        if devices:
+            return f"Available example: {room_name}.{devices[0]}"
+
+    return None

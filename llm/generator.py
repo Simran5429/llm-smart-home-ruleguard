@@ -16,59 +16,90 @@ Convert the user's request into a structured JSON rule.
 Available smart home data:
 {json.dumps(smart_home_data, indent=2)}
 
-Rules:
-- Only use devices that exist
-- Only use supported actions
-- Output ONLY valid JSON (no explanation)
+You must produce ONE of these two formats:
 
-Format:
+1. Direct command format (for simple commands like "turn on kitchen light"):
+{{
+  "action": {{
+    "device": "room.device_name",
+    "command": "supported_action"
+  }}
+}}
+
+2. Automation rule format (for condition-based requests like "if bedroom temperature is above 27, turn on AC"):
 {{
   "trigger": {{
     "type": "sensor",
     "source": "room.sensor_name",
     "operator": "greater_than",
-    "value": ""
+    "value": 27
   }},
   "action": {{
     "device": "room.device_name",
-    "command": ""
+    "command": "supported_action"
   }}
 }}
 
-Important:
-- The source field MUST use full format: room.sensor_name
-- The device field MUST use full format: room.device_name
-- Examples: bedroom.temperature_sensor, living_room.motion_sensor, bedroom.ac
-- Do NOT output short names like ac or temperature_sensor
-- Do NOT guess missing rooms or devices
-- If the user's request mentions a room or device that does not exist, keep the original requested room/device wording in the JSON
+Strict rules:
+- Use only rooms, devices, sensors, and actions from the provided smart home data
+- A trigger source MUST always be a sensor, never a device
+- A device field MUST always be a device, never a sensor
+- For simple direct user commands, return ONLY the action object
+- For condition-based requests, return both trigger and action
+- Do NOT add explanations
 - Output ONLY valid JSON
+- Do NOT guess missing rooms or devices
+- If the user mentions a room or device that does not exist, preserve the requested wording in the JSON so the validator can catch it
+
+Examples:
+User: Turn on kitchen light
+Output:
+{{
+  "action": {{
+    "device": "kitchen.light",
+    "command": "turn_on"
+  }}
+}}
+
+User: If bedroom temperature is above 27, turn on AC
+Output:
+{{
+  "trigger": {{
+    "type": "sensor",
+    "source": "bedroom.temperature_sensor",
+    "operator": "greater_than",
+    "value": 27
+  }},
+  "action": {{
+    "device": "bedroom.ac",
+    "command": "turn_on"
+  }}
+}}
 
 User request:
 {user_input}
 """
 
     response = client.chat.completions.create(
-    model="gpt-4o-mini",
-    temperature=0,
-    messages=[{"role": "user", "content": prompt}]
+        model="gpt-4o-mini",
+        temperature=0,
+        messages=[{"role": "user", "content": prompt}]
     )
-    
 
     output = response.choices[0].message.content.strip()
 
     if output.startswith("```json"):
-       output = output.replace("```json", "", 1).strip()
+        output = output.replace("```json", "", 1).strip()
 
     if output.startswith("```"):
-       output = output.replace("```", "", 1).strip()
+        output = output.replace("```", "", 1).strip()
 
     if output.endswith("```"):
-       output = output[:-3].strip()
+        output = output[:-3].strip()
 
     try:
         return json.loads(output)
-    except:
-        print("⚠️ Failed to parse JSON, raw output:")
+    except Exception:
+        print(" Failed to parse JSON, raw output:")
         print(output)
         return None

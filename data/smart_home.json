@@ -2,42 +2,103 @@
   "rooms": {
     "living_room": {
       "devices": {
-        "light": {
-          "actions": ["turn_on", "turn_off"],
-          "state": "off"
-        },
-        "fan": {
-          "actions": ["turn_on", "turn_off", "set_speed"],
-          "state": "off"
-        }
+        "light": { "actions": ["turn_on", "turn_off"], "state": "off" },
+        "fan": { "actions": ["turn_on", "turn_off", "set_speed"], "state": "off" },
+        "tv": { "actions": ["turn_on", "turn_off", "change_channel"], "state": "off" },
+        "speaker": { "actions": ["turn_on", "turn_off", "set_volume"], "state": "off" },
+        "curtain": { "actions": ["open", "close"], "state": "closed" }
       },
       "sensors": {
-        "motion_sensor": {
-          "value": false
-        },
-        "temperature_sensor": {
-          "value": 25
-        }
+        "motion_sensor": { "value": false },
+        "temperature_sensor": { "value": 24 },
+        "light_sensor": { "value": 300 }
       }
     },
     "bedroom": {
       "devices": {
-        "light": {
-          "actions": ["turn_on", "turn_off"],
-          "state": "off"
-        },
-        "ac": {
-          "actions": ["turn_on", "turn_off", "set_temperature"],
-          "state": "off"
-        }
+        "light": { "actions": ["turn_on", "turn_off"], "state": "off" },
+        "ac": { "actions": ["turn_on", "turn_off", "set_temperature"], "state": "off" },
+        "heater": { "actions": ["turn_on", "turn_off", "set_temperature"], "state": "off" },
+        "curtain": { "actions": ["open", "close"], "state": "closed" },
+        "humidifier": { "actions": ["turn_on", "turn_off", "set_level"], "state": "off" }
       },
       "sensors": {
-        "motion_sensor": {
-          "value": true
-        },
-        "temperature_sensor": {
-          "value": 29
-        }
+        "motion_sensor": { "value": true },
+        "temperature_sensor": { "value": 28 },
+        "humidity_sensor": { "value": 55 }
+      }
+    },
+    "kitchen": {
+      "devices": {
+        "light": { "actions": ["turn_on", "turn_off"], "state": "off" },
+        "oven": { "actions": ["turn_on", "turn_off", "set_temperature"], "state": "off" },
+        "exhaust_fan": { "actions": ["turn_on", "turn_off", "set_speed"], "state": "off" },
+        "coffee_maker": { "actions": ["turn_on", "turn_off"], "state": "off" },
+        "refrigerator": { "actions": ["turn_on", "turn_off", "set_temperature"], "state": "on" }
+      },
+      "sensors": {
+        "smoke_sensor": { "value": false },
+        "gas_sensor": { "value": false },
+        "temperature_sensor": { "value": 30 }
+      }
+    },
+    "bathroom": {
+      "devices": {
+        "light": { "actions": ["turn_on", "turn_off"], "state": "off" },
+        "geyser": { "actions": ["turn_on", "turn_off", "set_temperature"], "state": "off" },
+        "exhaust_fan": { "actions": ["turn_on", "turn_off"], "state": "off" }
+      },
+      "sensors": {
+        "humidity_sensor": { "value": 60 },
+        "motion_sensor": { "value": false }
+      }
+    },
+    "office": {
+      "devices": {
+        "light": { "actions": ["turn_on", "turn_off"], "state": "off" },
+        "fan": { "actions": ["turn_on", "turn_off", "set_speed"], "state": "off" },
+        "computer": { "actions": ["turn_on", "turn_off"], "state": "off" },
+        "printer": { "actions": ["turn_on", "turn_off"], "state": "off" },
+        "speaker": { "actions": ["turn_on", "turn_off", "set_volume"], "state": "off" }
+      },
+      "sensors": {
+        "motion_sensor": { "value": false },
+        "temperature_sensor": { "value": 25 }
+      }
+    },
+    "garage": {
+      "devices": {
+        "door": { "actions": ["open", "close"], "state": "closed" },
+        "light": { "actions": ["turn_on", "turn_off"], "state": "off" },
+        "camera": { "actions": ["turn_on", "turn_off"], "state": "on" },
+        "charger": { "actions": ["turn_on", "turn_off"], "state": "off" }
+      },
+      "sensors": {
+        "motion_sensor": { "value": false },
+        "door_sensor": { "value": false }
+      }
+    },
+    "dining_room": {
+      "devices": {
+        "light": { "actions": ["turn_on", "turn_off"], "state": "off" },
+        "speaker": { "actions": ["turn_on", "turn_off", "set_volume"], "state": "off" },
+        "ac": { "actions": ["turn_on", "turn_off", "set_temperature"], "state": "off" }
+      },
+      "sensors": {
+        "motion_sensor": { "value": false },
+        "temperature_sensor": { "value": 26 }
+      }
+    },
+    "garden": {
+      "devices": {
+        "light": { "actions": ["turn_on", "turn_off"], "state": "off" },
+        "sprinkler": { "actions": ["turn_on", "turn_off"], "state": "off" },
+        "camera": { "actions": ["turn_on", "turn_off"], "state": "on" }
+      },
+      "sensors": {
+        "motion_sensor": { "value": false },
+        "soil_moisture_sensor": { "value": 40 },
+        "light_sensor": { "value": 500 }
       }
     }
   }
